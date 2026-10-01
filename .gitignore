@@ -47,3 +47,35 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+ENV/
+env/
+.pythonlibs/
+.python-version
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Local database and uploaded user content
+instance/
+*.db
+*.sqlite
+*.sqlite3
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Hugging Face model cache and temporary files
+.cache/huggingface/
+hf_cache/
+*.tmp
+.pytest_cache/
+.coverage
+htmlcov/

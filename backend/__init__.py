@@ -1,0 +1,1 @@
+"""Flask API for the AI image captioning application."""

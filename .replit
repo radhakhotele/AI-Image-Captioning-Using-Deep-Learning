@@ -1,4 +1,9 @@
-modules = ["nodejs-24"]
+modules = ["nodejs-24", "python-3.11"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+exposeLocalhost = true
 
 [deployment]
 router = "application"
@@ -11,6 +16,43 @@ env = { "CI" = "true" }
 [workflows]
 runButton = "Project"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Caption API"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Caption Studio"
+
+[[workflows.workflow]]
+name = "Caption API"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python -m backend.app"
+waitForPort = 8000
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "Caption Studio"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "streamlit run frontend/streamlit_app.py --server.address 0.0.0.0 --server.port 5000"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true
@@ -18,3 +60,7 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[nix]
+channel = "stable-25_05"
+packages = ["freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "postgresql", "tcl", "tk", "zlib"]

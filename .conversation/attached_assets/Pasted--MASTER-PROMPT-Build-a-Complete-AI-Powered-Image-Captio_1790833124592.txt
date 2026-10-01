@@ -1,0 +1,479 @@
+# MASTER PROMPT: Build a Complete AI-Powered Image Captioning Web Application
+
+Act as a senior Python full-stack developer, AI/ML engineer, UI/UX designer, and software architect. Build a complete, functional, beginner-friendly, and deployment-ready **AI-Powered Image Captioning Web Application** from scratch using Replit Agent.
+
+I want you to perform the entire development process through AI assistance. Create all necessary files, write the code, install dependencies, configure the application, run tests, identify and fix errors, and prepare the project for GitHub and public deployment.
+
+Do not merely provide code snippets or instructions. Directly create and modify the project files in the Replit workspace. Do not ask me to write code manually. Make reasonable technical decisions independently and continue until the application is implemented and tested as far as the available environment allows.
+
+## 1. PROJECT OVERVIEW
+
+Build a web application that allows users to upload an image, generate a meaningful natural-language caption using a pretrained deep learning model, and save the uploaded image and its generated caption in a database through a Flask backend.
+
+The application must have a modern, attractive, user-friendly Streamlit frontend and a modular Flask backend.
+
+**Project name:** AI-Powered Image Captioning Web Application
+
+**Main objective:** Use computer vision and natural language generation to automatically describe the contents of uploaded images.
+
+## 2. TECHNOLOGY STACK
+
+Use the following technologies:
+
+* Programming language: Python
+* Frontend: Streamlit
+* Backend: Flask
+* AI model: Pretrained ViT-GPT2 image captioning model from Hugging Face
+* Deep learning: PyTorch and Hugging Face Transformers
+* Image processing: Pillow
+* Database: SQLite with SQLAlchemy for local development
+* Production database: PostgreSQL if supported by the selected hosting configuration
+* API communication: REST API using HTTP and JSON
+* Frontend-backend communication: Python Requests
+* CORS: Flask-CORS
+* Version control: Git and GitHub
+* AI-assisted development: Replit Agent
+* Frontend deployment: Streamlit Community Cloud
+* Backend deployment preparation: Render or a compatible Python web hosting service
+
+Use compatible dependency versions and avoid unnecessary libraries, complicated architecture, or paid external AI APIs.
+
+## 3. PROJECT STRUCTURE
+
+Create a clean, modular project with the following structure:
+
+AI-Image-Captioning/
+backend/
+app.py
+extensions.py
+models.py
+caption_generator.py
+config.py
+requirements.txt
+uploads/
+tests/
+test_api.py
+
+```
+frontend/
+    streamlit_app.py
+    requirements.txt
+
+.gitignore
+.env.example
+README.md
+LICENSE (only if an appropriate license is selected)
+```
+
+You may add additional files when technically necessary, but keep the application organized and beginner-friendly.
+
+Explain the purpose of the important files in the README.
+
+## 4. FLASK BACKEND DEVELOPMENT
+
+Develop a complete Flask backend that handles image uploads, AI caption generation, database operations, and REST API communication.
+
+Create a modular Flask application with the following responsibilities:
+
+**app.py**
+
+* Initialize the Flask application.
+* Register API routes.
+* Configure CORS.
+* Initialize the database.
+* Connect the API with the caption generation module.
+* Handle errors and return appropriate JSON responses.
+
+**extensions.py**
+
+* Initialize SQLAlchemy and other Flask extensions.
+
+**models.py**
+
+* Create the database model for uploaded images and their captions.
+
+Each image record must contain:
+
+* Unique ID
+* Unique filename
+* Stored image path or storage key
+* Generated caption
+* Upload timestamp
+* Last updated timestamp
+
+**config.py**
+
+* Manage environment-based application configuration.
+* Separate local development and production settings.
+* Configure upload limits, database connection, and other relevant settings.
+
+Implement these REST API endpoints:
+
+1. GET /api/health
+
+   * Check whether the Flask backend is running.
+   * Return a JSON response indicating application status.
+
+2. POST /api/caption
+
+   * Accept an uploaded image.
+   * Validate the image type, file contents, and upload size.
+   * Generate a unique filename.
+   * Process the image using the AI captioning model.
+   * Save the uploaded image and its caption.
+   * Store the corresponding record in the database.
+   * Return the image ID, filename, caption, and timestamp.
+
+3. GET /api/images
+
+   * Retrieve all saved image records.
+   * Return image details and captions in descending upload order.
+
+4. GET /api/images/<id>
+
+   * Retrieve an individual image record using its unique ID.
+
+5. DELETE /api/images/<id>
+
+   * Delete an image record and its associated stored image.
+   * Return an appropriate response when the record does not exist.
+
+6. GET /api/images/<id>/file
+
+   * Provide safe access to a saved image for displaying it in the frontend.
+
+Use suitable HTTP status codes, consistent JSON response formats, and meaningful error messages.
+
+Validate uploaded file contents rather than trusting file extensions or MIME types. Prevent unsafe filenames, path traversal, oversized uploads, and invalid image files. Do not expose internal server paths, secrets, or stack traces to users.
+
+Use Flask-CORS with appropriately configured allowed origins. Do not use unrestricted production CORS configuration.
+
+## 5. AI IMAGE CAPTION GENERATION
+
+Implement the AI functionality in backend/caption_generator.py.
+
+Use a pretrained ViT-GPT2 image captioning checkpoint, such as nlpconnect/vit-gpt2-image-captioning, through Hugging Face Transformers.
+
+Requirements:
+
+* Load the pretrained model and its associated tokenizer and image processor correctly.
+* Initialize the model once during backend startup or through a safe lazy-loading mechanism.
+* Do not download or initialize the model on every request.
+* Support CPU inference and compatible GPU inference when available.
+* Convert and preprocess images into the correct input format.
+* Generate natural-language image captions using the pretrained model.
+* Return a clean caption string to the Flask backend.
+* Handle model loading errors, invalid images, inference failures, and empty outputs.
+* Cache downloaded model files where supported.
+* Avoid requiring model training or paid API access.
+* Use suitable generation parameters and avoid unnecessarily long captions.
+* Ensure concurrent requests do not cause unsafe model initialization or other avoidable resource issues.
+
+If the selected model is incompatible with the available Python, PyTorch, Transformers, or hardware environment, diagnose the problem and choose a compatible pretrained alternative. Do not silently replace real AI inference with hardcoded or simulated captions.
+
+Document the selected model, its purpose, resource requirements, and limitations in the README.
+
+## 6. DATABASE AND IMAGE STORAGE
+
+Implement SQLAlchemy models and database operations.
+
+For local development, use SQLite and create the required database tables automatically.
+
+The application must:
+
+* Save image metadata and generated captions.
+* Retrieve image records.
+* Update timestamps where relevant.
+* Delete records safely.
+* Handle missing records and database failures.
+* Keep database logic separate from the frontend.
+
+For public deployment, evaluate whether the selected host provides persistent storage. Do not assume that a local SQLite database or uploads directory will persist across restarts or redeployments.
+
+Prepare the application to use PostgreSQL and persistent image storage, such as a supported persistent disk or object storage service, when needed. Keep the local SQLite development workflow functional.
+
+Never commit private databases, uploaded user images, or secrets to GitHub.
+
+## 7. STREAMLIT FRONTEND DEVELOPMENT
+
+Build a complete, professional Streamlit frontend in frontend/streamlit_app.py.
+
+The interface should be visually attractive, responsive, intuitive, and suitable for a final-year engineering project and portfolio demonstration.
+
+**Design requirements:**
+
+* Modern and minimal design.
+* Light background with tasteful purple and blue accent colors.
+* Professional typography.
+* Clean spacing and consistent layouts.
+* Attractive cards and buttons.
+* Clear navigation.
+* Responsive image previews.
+* Readable captions.
+* Appropriate loading, success, empty, and error states.
+
+Create the following pages or navigation sections.
+
+### A. Home
+
+* Display the application name: AI-Powered Image Captioning.
+* Include a concise introduction.
+* Explain how image captioning works.
+* Display the main project features.
+* Provide a prominent option to start generating captions.
+* Include a simple description of the technology used.
+
+### B. Generate Caption
+
+* Provide a drag-and-drop image upload interface using Streamlit's file uploader.
+* Support JPG, JPEG, and PNG.
+* Validate the selected file.
+* Display a preview of the uploaded image.
+* Display its filename and dimensions.
+* Add a clearly visible Generate Caption button.
+* Send the image to the Flask backend using multipart/form-data.
+* Display a loading spinner while the backend processes the image.
+* Display the actual caption generated by the pretrained model.
+* Show the uploaded image and its generated caption together.
+* Provide an option to copy the generated caption where supported.
+* Provide a way to clear the current upload and start again.
+* Display clear error messages if the request fails.
+
+Do not generate captions locally in Streamlit or display fabricated results. The Flask backend must handle actual model inference.
+
+### C. Caption History
+
+* Retrieve saved image records from the Flask API.
+* Display saved images as attractive cards or a gallery.
+* Show each image's caption, filename, and upload timestamp.
+* Provide an option to view individual image details.
+* Provide a Delete button for each record.
+* Ask for confirmation before deletion.
+* Refresh the history after a successful deletion.
+* Show a helpful empty state when there are no saved captions.
+* Display useful error messages when the backend cannot be reached.
+
+### D. Sidebar and Navigation
+
+Create a clean sidebar with:
+
+* Application logo or suitable icon.
+* Home
+* Generate Caption
+* Caption History
+* About the Project
+
+Keep navigation consistent and easy to understand.
+
+### E. Frontend Configuration
+
+* Read BACKEND_URL from an environment variable or Streamlit secrets.
+* Do not hardcode a production backend URL.
+* Use Requests with suitable timeouts.
+* Handle unavailable APIs and unexpected responses.
+* Keep frontend and backend responsibilities separate.
+* Use Streamlit session state appropriately.
+* Avoid unnecessary repeated API requests.
+
+## 8. APPLICATION INTEGRATION
+
+Connect the Streamlit frontend to the Flask backend through the REST API.
+
+Ensure that:
+
+* Image uploads use the correct multipart/form-data format.
+* Flask returns consistent JSON responses.
+* Streamlit correctly reads the caption and record ID.
+* Saved captions appear in the history page.
+* Images can be retrieved safely for display.
+* Deleting a record updates the database and storage.
+* The frontend uses the configured backend URL.
+* Failed requests do not produce fake success messages.
+* Timeouts and connection errors are handled gracefully.
+
+Create a local development configuration that makes it possible to run Flask and Streamlit separately.
+
+If Replit's available environment cannot run both services simultaneously in its preview, provide the appropriate separate run configurations or explain the required local and hosted execution arrangements. Do not sacrifice the intended Flask and Streamlit architecture just to make a single preview work.
+
+## 9. TESTING AND DEBUGGING
+
+Create and run appropriate automated tests wherever the environment allows.
+
+Test:
+
+* Flask application startup.
+* Health-check endpoint.
+* Database initialization.
+* Valid image upload.
+* Invalid file rejection.
+* Caption generation integration.
+* Database record creation and retrieval.
+* Individual image retrieval.
+* Image deletion.
+* Missing record handling.
+* Frontend API request handling.
+* Backend unavailable and timeout scenarios.
+
+Use mocked model inference for appropriate unit tests so that tests do not require downloading a large model unnecessarily. Also perform an actual sample-image inference test when the environment has enough resources and model access.
+
+Review the entire codebase for:
+
+* Missing imports.
+* Incorrect file paths.
+* Dependency conflicts.
+* API mismatches.
+* Incorrect database configuration.
+* Model initialization problems.
+* Unhandled exceptions.
+* Security issues.
+* Frontend display problems.
+
+Fix reproducible errors directly in the relevant files. Do not rewrite working parts of the application unnecessarily.
+
+Provide a clear test report distinguishing successfully tested features from features that could not be tested.
+
+## 10. USER EXPERIENCE AND SECURITY
+
+Ensure the application is safe and suitable for public demonstration.
+
+Implement:
+
+* File size limits.
+* File format and content validation.
+* Safe image storage.
+* Unique filenames.
+* Appropriate CORS restrictions.
+* Safe API error handling.
+* Configurable request timeouts.
+* Secret management through environment variables.
+* Protection against unsafe file paths.
+* Sensible logging without sensitive information.
+
+Avoid adding authentication, complex user management, payment systems, or unnecessary features unless they are essential to the application.
+
+## 11. GITHUB PREPARATION
+
+Prepare the complete application for GitHub.
+
+Create a comprehensive README.md with:
+
+* Project title.
+* Overview.
+* Features.
+* Technology stack.
+* Application architecture.
+* Project folder structure.
+* Installation instructions.
+* Local setup.
+* Backend configuration.
+* Frontend configuration.
+* API documentation.
+* AI model details.
+* Screenshots section with placeholders.
+* Deployment instructions.
+* Known limitations.
+* Future enhancements.
+
+Create a suitable .gitignore that excludes:
+
+* Python virtual environments.
+* **pycache**.
+* .env and other private secrets.
+* Local database files.
+* Uploaded images.
+* Model cache files.
+* Temporary files.
+* IDE-specific unnecessary files.
+
+Create .env.example with placeholder configuration values only.
+
+Check that the project does not contain API keys, passwords, private data, or uploaded user images.
+
+If GitHub integration is available, help prepare the repository and use the available authorized integration to publish the project only after the required account authorization. Otherwise, provide clear instructions for creating a repository and pushing the code.
+
+Do not claim that a GitHub repository has been created or that code has been pushed unless that action has actually succeeded.
+
+## 12. DEPLOYMENT PREPARATION
+
+Prepare the frontend and backend for separate deployment.
+
+**Flask backend:**
+
+* Configure a production WSGI server such as Gunicorn.
+* Provide the appropriate start command.
+* Configure host and port correctly.
+* Configure production environment variables.
+* Prepare a health-check endpoint.
+* Review persistent database and image storage requirements.
+* Prepare the backend for a compatible hosting provider such as Render.
+
+**Streamlit frontend:**
+
+* Prepare frontend/requirements.txt.
+* Ensure frontend/streamlit_app.py is the correct application entry point.
+* Configure BACKEND_URL using the hosting provider's secrets or environment settings.
+* Prepare the application for Streamlit Community Cloud.
+* Ensure the frontend communicates with the deployed Flask API.
+
+**Deployment documentation:**
+Provide exact instructions for:
+
+1. Pushing the completed project to GitHub.
+2. Connecting the GitHub repository to the Flask hosting provider.
+3. Configuring backend environment variables.
+4. Deploying and verifying the Flask backend.
+5. Connecting the GitHub repository to Streamlit Community Cloud.
+6. Setting the frontend backend URL.
+7. Deploying and verifying the Streamlit frontend.
+8. Testing image upload, caption generation, history, and deletion on the live application.
+
+Prepare all code and configuration possible within Replit. Do not invent deployment URLs or claim successful deployment without verification. Clearly identify any account authorization, hosting configuration, or manual dashboard action that I must complete.
+
+## 13. FINAL PROJECT QUALITY
+
+Make the application:
+
+* Functional rather than a static UI mockup.
+* Beginner-friendly and modular.
+* Suitable for demonstrating Python, Flask, REST APIs, databases, computer vision, and frontend development in placement interviews.
+* Easy to maintain and extend.
+* Properly documented.
+* Ready for GitHub publication after final review.
+* Prepared for deployment on the intended hosting platforms.
+
+Avoid unnecessary abstractions, redundant code, excessive dependencies, and features that complicate the core project.
+
+Keep the code readable and add useful comments to important functions, API routes, database operations, and AI model integration.
+
+## 14. EXECUTION INSTRUCTIONS
+
+Build the project in logical internal stages:
+
+1. Create the project structure and configuration.
+2. Implement the Flask backend and database.
+3. Integrate the pretrained AI model.
+4. Implement the Streamlit frontend.
+5. Connect the frontend and backend.
+6. Test and debug the application.
+7. Improve the interface and error handling.
+8. Prepare GitHub documentation and configuration.
+9. Prepare production deployment configuration.
+10. Perform a final review and provide a completion report.
+
+Do not stop after creating the folder structure or generating a basic interface. Continue through the entire implementation process, using the available Replit tools and environment.
+
+If a dependency fails to install, investigate and select a compatible version. If the model cannot run because of memory, compute, network, or platform limitations, explain the issue and select an appropriate compatible solution where possible without removing real AI caption generation.
+
+If an external service requires credentials or user authorization, prepare the necessary integration and tell me exactly what I need to authorize or configure. Do not fabricate credentials, URLs, test results, or deployment status.
+
+At the end, provide:
+
+* A summary of all created files.
+* A description of how the application works.
+* The commands or Replit run configurations needed to start it.
+* The results of the tests actually performed.
+* Any unresolved errors or environment limitations.
+* The remaining manual steps for GitHub and deployment.
+* A final checklist for verifying the public application.
+
+Start building the complete project now. Make sensible decisions independently, implement as much as possible, and prioritize a working end-to-end application over unnecessary complexity.

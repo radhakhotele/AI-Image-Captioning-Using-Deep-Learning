@@ -1,0 +1,1 @@
+- [Python ML dependency setup](python-ml-dependencies.md) — Replit's Python package installer rewrites the workspace-root requirements file; keep frontend and backend deployment dependencies separated.
