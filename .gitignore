@@ -2,6 +2,7 @@
 
 # compiled output
 dist
+build/
 tmp
 out-tsc
 *.tsbuildinfo
@@ -58,11 +59,16 @@ ENV/
 env/
 .pythonlibs/
 .python-version
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+*.egg-info/
 
 # Secrets and local configuration
 .env
 .env.*
 !.env.example
+.streamlit/secrets.toml
 
 # Local database and uploaded user content
 instance/
@@ -72,10 +78,21 @@ instance/
 backend/uploads/*
 !backend/uploads/.gitkeep
 
-# Hugging Face model cache and temporary files
+# Downloaded model checkpoints and caches
 .cache/huggingface/
 hf_cache/
+model_cache/
+models/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+pytorch_model*.bin
+tf_model.h5
+flax_model.msgpack
+
+# Local logs and temporary files
+*.log
 *.tmp
-.pytest_cache/
 .coverage
 htmlcov/

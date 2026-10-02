@@ -36,33 +36,37 @@ used automatically if available.
 ## Project structure
 
 ```text
-backend/
-  app.py                 Flask application factory, routes, validation
-  caption_generator.py   Thread-safe lazy model loading and inference
-  config.py              Environment-based settings
-  extensions.py          SQLAlchemy extension
-  models.py              Image and caption database record
-  wsgi.py                Gunicorn entry point
-  requirements.txt       Backend and model runtime dependencies
-  requirements-test.txt  Lightweight dependencies for mocked tests
-  uploads/.gitkeep       Local image-storage directory
-frontend/
-  api_client.py          Flask API Requests client and safe errors
-  streamlit_app.py       Home, upload, history, and project pages
-  requirements.txt       Streamlit frontend dependencies
-tests/
-  test_api.py            Flask endpoint and storage tests
-  test_api_client.py     Frontend connection, response, and timeout tests
-.streamlit/config.toml   Light theme and purple/blue accent configuration
-.env.example             Placeholder local/deployment settings
-requirements.txt         Streamlit Community Cloud dependency entry point
-requirements-dev.txt     Lightweight local test dependencies
-README.md                Setup, API, testing, and deployment guide
+.
+├── backend/                 Flask API, model inference, database and uploads
+├── frontend/                Streamlit interface and API client
+├── tests/                   API and frontend-client tests
+├── artifacts/
+│   ├── api-server/           Replit-managed API workspace artifact
+│   └── mockup-sandbox/       Canvas/component-preview source
+├── lib/
+│   ├── api-client-react/     Shared TypeScript client
+│   ├── api-spec/             OpenAPI source and generator config
+│   ├── api-zod/              Shared API schemas
+│   └── db/                   Shared database package/schema
+├── scripts/                  Workspace maintenance scripts
+├── .streamlit/config.toml    Streamlit theme
+├── .env.example              Safe configuration template
+├── requirements.txt          Streamlit Community Cloud entry point
+├── requirements-dev.txt      Lightweight test dependencies
+├── package.json              Root Node workspace metadata
+├── pnpm-lock.yaml            Node dependency lockfile
+└── pnpm-workspace.yaml       Node workspace package list
 ```
+
+The Python captioning application runs from `backend/` and `frontend/`. The
+`artifacts/`, `lib/`, and Node workspace files are retained as tracked Replit
+workspace source; they are not required to run the Python captioning application.
 
 ## Screenshots
 
-Add screenshots after launching the app. Suggested captures:
+No screenshot files are currently included. After capturing the running app,
+place screenshots in `docs/screenshots/` and add relative Markdown image links
+here. Suggested captures:
 
 ```text
 docs/screenshots/home.png
@@ -72,10 +76,13 @@ docs/screenshots/caption-history.png
 
 ## Run locally
 
-Use Python 3.11 or newer. Create a virtual environment, install the backend and
-frontend dependencies, and copy the example configuration:
+Use Python 3.11, the version used by this Replit workspace. After the GitHub
+repository has been created, clone it, create a virtual environment, install the
+backend and frontend dependencies, and copy the example configuration:
 
 ```bash
+git clone https://github.com/<your-account>/AI-Image-Captioning.git
+cd AI-Image-Captioning
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 python -m pip install -r backend/requirements.txt -r frontend/requirements.txt
@@ -148,12 +155,26 @@ Successful responses use `{"success": true, "data": ...}`. Errors use
 | `GET` | `/api/images/<id>/file` | The normalized image for a record |
 | `DELETE` | `/api/images/<id>` | Delete the record and stored image |
 
-Example upload:
+`POST /api/caption` accepts `multipart/form-data` with an `image` field and
+returns HTTP `201` with the saved record. Missing or invalid images return
+`400`, oversized uploads return `413`, model failures return `503`, and storage
+failures return `500`.
+
+Example health check and upload:
 
 ```bash
+curl http://127.0.0.1:8000/api/health
+
 curl -X POST http://127.0.0.1:8000/api/caption \
   -F "image=@sample.jpg"
 ```
+
+Caption records include an `id`, safe stored `filename`, sanitized
+`original_filename`, generated `caption`, timestamps, and `image_url`. Use
+`GET /api/images` for newest-first history, `GET /api/images/<id>` for one
+record, and `DELETE /api/images/<id>` to delete a record and its stored image.
+Successful requests to `/api/images/<id>/file` return image bytes with an
+`image/jpeg` or `image/png` content type, not the JSON response envelope.
 
 The API validates the decoded Pillow format rather than trusting the browser's
 MIME type. It rejects mismatched extensions, unsupported or corrupt files,
@@ -191,27 +212,27 @@ requests, HTTP errors, unavailable-backend behavior, and timeouts. A successful
 mocked test run does not prove that Hugging Face can be reached or that a real
 caption can be generated on a particular host.
 
-## GitHub preparation
+## Publish to GitHub
 
-No GitHub account connection is configured in this workspace, so the project has
-not been published. To publish it:
+Create an empty repository named `AI-Image-Captioning` in your GitHub account
+and choose its visibility. Do not initialize it with a separate README, license,
+or `.gitignore`; this project already has those files and a local Git history.
 
-1. Create an empty repository in your GitHub account.
-2. From this project directory, initialize Git if needed, then run:
+To publish manually from this workspace, add GitHub as a separate remote so the
+existing Replit backup remote remains unchanged:
 
-   ```bash
-   git init
-   git add .
-   git commit -m "Build AI image captioning app"
-   git branch -M main
-   git remote add origin https://github.com/<your-account>/<your-repository>.git
-   git push -u origin main
-   ```
+```bash
+git status --short
+git add -A
+git commit -m "Prepare AI image captioning project for GitHub"
+git remote add github https://github.com/<your-account>/AI-Image-Captioning.git
+git push -u github main
+```
 
-3. Replace the angle-bracket values with your repository details. GitHub may ask
-   you to sign in or authorize the push.
-4. Confirm that `.env`, local databases, generated uploads, Python caches, and
-   Hugging Face model files are not included in the repository.
+Replace `<your-account>` with your GitHub username or organization. If a `github`
+remote already exists, use `git remote set-url github
+https://github.com/<your-account>/AI-Image-Captioning.git` instead. Review the
+staged file list before committing or pushing.
 
 ## Deployment
 
