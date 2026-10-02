@@ -1,1 +1,2 @@
 - [Python ML dependency setup](python-ml-dependencies.md) — Replit's Python package installer rewrites the workspace-root requirements file; keep frontend and backend deployment dependencies separated.
+- [Replit Preview forwarding](replit-preview-routing.md) — a running webview port does not prove the dev-domain proxy is configured; verify the external route itself.
