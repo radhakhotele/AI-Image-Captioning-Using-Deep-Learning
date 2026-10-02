@@ -160,3 +160,6 @@ overrides:
   esbuild: "0.28.2"
   # orval pins js-yaml to an exact version older than the CVE fix (>=4.3.2)
   js-yaml: '4.3.2'
+  # Keep vulnerable transitive ranges on their compatible patched releases.
+  "minimatch>brace-expansion": "5.0.12"
+  "ajv>fast-uri": "3.1.8"
