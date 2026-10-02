@@ -81,8 +81,8 @@ repository has been created, clone it, create a virtual environment, install the
 backend and frontend dependencies, and copy the example configuration:
 
 ```bash
-git clone https://github.com/<your-account>/AI-Image-Captioning.git
-cd AI-Image-Captioning
+git clone https://github.com/<your-account>/AI-Image-Captioning-Using-Deep-Learning.git
+cd AI-Image-Captioning-Using-Deep-Learning
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 python -m pip install -r backend/requirements.txt -r frontend/requirements.txt
@@ -214,7 +214,7 @@ caption can be generated on a particular host.
 
 ## Publish to GitHub
 
-Create an empty repository named `AI-Image-Captioning` in your GitHub account
+Create an empty repository named `AI-Image-Captioning-Using-Deep-Learning` in your GitHub account
 and choose its visibility. Do not initialize it with a separate README, license,
 or `.gitignore`; this project already has those files and a local Git history.
 
@@ -225,13 +225,13 @@ existing Replit backup remote remains unchanged:
 git status --short
 git add -A
 git commit -m "Prepare AI image captioning project for GitHub"
-git remote add github https://github.com/<your-account>/AI-Image-Captioning.git
+git remote add github https://github.com/<your-account>/AI-Image-Captioning-Using-Deep-Learning.git
 git push -u github main
 ```
 
 Replace `<your-account>` with your GitHub username or organization. If a `github`
 remote already exists, use `git remote set-url github
-https://github.com/<your-account>/AI-Image-Captioning.git` instead. Review the
+https://github.com/<your-account>/AI-Image-Captioning-Using-Deep-Learning.git` instead. Review the
 staged file list before committing or pushing.
 
 ## Deployment
