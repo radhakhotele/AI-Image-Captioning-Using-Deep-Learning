@@ -1,0 +1,43 @@
+Continue working on my existing AI-Powered Image Captioning Web Application from the current project state.
+
+The application has been developed and tested successfully. The final repository security check passed for secrets, private data, and unnecessary large files. However, the dependency audit reported several high and moderate vulnerabilities, including findings in pytest, brace-expansion, and fast-uri. Two path-traversal alerts in the Flask backend were also reported and need to be reviewed.
+
+I want you to update and test the affected dependencies before uploading the project to GitHub.
+
+Follow these steps:
+
+1. Inspect the existing project files and dependency versions. Do not recreate or rewrite the project.
+
+2. Review the reported security vulnerabilities and identify the exact affected packages, installed versions, advisory IDs, and available patched versions.
+
+3. Update vulnerable dependencies to compatible, secure versions wherever possible. Maintain compatibility with Flask, Streamlit, PyTorch, Transformers, Pillow, SQLAlchemy, and the existing ViT-GPT2 image captioning model.
+
+4. Avoid unnecessary dependency upgrades or changes to the existing application architecture.
+
+5. Reinstall or resolve the dependencies and check for version conflicts.
+
+6. Run all existing automated tests and verify the Flask backend, Streamlit frontend, database operations, image upload, caption generation, caption history, and deletion functionality wherever the environment allows.
+
+7. Review the two reported path-traversal alerts in the Flask backend. Verify the relevant code and document whether they are genuine vulnerabilities or false positives. Fix any genuine security issue.
+
+8. Run the dependency security audit again and report the remaining findings, if any.
+
+9. Check that .gitignore continues to exclude secrets, environment files, local databases, uploaded images, model files, and other unnecessary files.
+
+10. Do not upload anything to GitHub or publish the application yet. Keep the repository empty until I review the final report.
+
+At the end, provide:
+
+* Packages and versions changed
+* Vulnerabilities resolved
+* Remaining security findings
+* Automated test results
+* AI caption generation test results
+* Any compatibility or deployment issues
+* Confirmation of whether the project is ready for its initial public GitHub upload
+
+If the Replit environment or usage limit prevents you from completing any step, clearly identify where you stopped and what remains to be done.
+
+Preserve all existing working features and do not claim that a test or security check passed unless it was actually performed.
+
+Start by inspecting the current project state and continue from where the previous work stopped.
